@@ -11,17 +11,42 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Notes {
+model Workspace {
     id              String @id @default(uuid())
     userId          String
     title           String
-    isPublic        String
-    content         String
+    slug            String
     createdAt       DateTime @default(now())
-
+    updatedAt       DateTime @default(now())
+    
+    notes           Note[]
     user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    // The unique constraint on [userId, slug] helps enforce data integrity by preventing duplicate combinations of these fields.
+    @@unique([userId, slug])
+
+    // An index is a data structure that improves the speed of data retrieval operations on a database table.
     @@index([userId])
+}
+
+model Note {
+    id              String @id @default(uuid())
+    userId          String
+    workspaceId     String
+    title           String
+    content         String
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+
+    user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    // The unique constraint on [createdAt, id] helps enforce data integrity by preventing duplicate combinations of these fields.
+    @@unique([id, workspaceId])
+
+    // An index is a data structure that improves the speed of data retrieval operations on a database table.
+    @@index([userId])
+    @@index([workspaceId])
 }
 
 // Necessary for Next auth
@@ -65,7 +90,9 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    notes         Notes[]
+
+    notes         Note[]
+    workspaces    Workspace[]
 }
 
 model VerificationToken {

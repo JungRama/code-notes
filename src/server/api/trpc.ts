@@ -7,14 +7,14 @@
  * need to use are documented accordingly near the end.
  */
 
-import { initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
-import superjson from "superjson";
-import { ZodError } from "zod";
+import { type inferAsyncReturnType, initTRPC, TRPCError } from '@trpc/server';
+import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { type Session } from 'next-auth';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
 
-import { getServerAuthSession } from "~/server/auth";
-import { db } from "~/server/db";
+import { getServerAuthSession } from '~/server/auth';
+import { db } from '~/server/db';
 
 /**
  * 1. CONTEXT
@@ -38,7 +38,7 @@ interface CreateContextOptions {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
+export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     db,
@@ -61,6 +61,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
     session,
   });
 };
+
+export type Context = inferAsyncReturnType<typeof createTRPCContext>;
 
 /**
  * 2. INITIALIZATION
@@ -110,7 +112,7 @@ export const publicProcedure = t.procedure;
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.session?.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
   return next({
     ctx: {
