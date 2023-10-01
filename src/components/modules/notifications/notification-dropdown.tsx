@@ -1,7 +1,7 @@
-import { Bell } from "lucide-react";
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
+import { Bell } from 'lucide-react';
+import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
+} from '~/components/ui/dropdown-menu';
 
 export default function NotificationDropdown() {
   return (
@@ -26,7 +26,7 @@ export default function NotificationDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80" align="end" forceMount>
         <DropdownMenuLabel className="p-0">
-          <Link href={"/"} className="block p-2">
+          <Link href={'/'} className="block p-2">
             <div className="flex flex-col space-y-1">
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-red-500"></div>
@@ -34,7 +34,7 @@ export default function NotificationDropdown() {
                   Invited on &quot;Vercela Workspace&quot;
                 </p>
               </div>
-              <p className="text-muted-foreground text-xs leading-none">
+              <p className="text-xs leading-none text-muted-foreground">
                 20 minutes ago
               </p>
             </div>
