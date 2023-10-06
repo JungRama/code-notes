@@ -30,60 +30,67 @@ import {
 
 import DialogNewWorkspace from './dialog-new-workspace';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
+import { type Workspace } from '@prisma/client';
 import { api } from '~/utils/api';
-
-export const getServerSideProps = () => {
-  const workspaces = api.workspace.getAll.useSuspenseQuery;
-
-  return {
-    props: {
-      workspaces,
-    },
-  };
-};
+import { Skeleton } from '~/components/ui/skeleton';
+import useStoreWorkspaces from '~/store/workspaces';
 
 export default function WorkspaceSelector() {
   const router = useRouter();
+  const { defaultWorkspace, setDefaultWorkspace } = useStoreWorkspaces();
 
   const workspaces = api.workspace.getAll.useQuery();
 
-  const groups = [
-    {
-      label: 'My Workspaces',
-      workspaces: workspaces.data?.data ?? [],
-    },
-  ];
-
-  type Workspace = (typeof groups)[number]['workspaces'][number];
-
   const [open, setOpen] = useState(false);
   const [openDialogNew, setOpenDialogNew] = useState(false);
-  const [selectedWorkspace, setSelectedWorkspace] = useState<Workspace | null>(
-    null,
-  );
 
+  const [groups, setGroups] = useState<
+    {
+      label: string;
+      workspaces: Workspace[];
+    }[]
+  >([
+    {
+      label: 'My Workspaces',
+      workspaces: [],
+    },
+  ]);
+  // This useEffect hook is responsible for setting up the initial state of the groups and selected workspace in the component.
   useEffect(() => {
+    // Set the groups state by creating an array with a single object.
+    setGroups([
+      {
+        label: groups[0]?.label ?? 'My Workspaces',
+        workspaces: workspaces.data?.data ?? [],
+      },
+    ]);
+
+    // Check if the 'workspace' query parameter exists in the router.
     if (router.query.workspace) {
+      // If a match is found, set the selected workspace to the matching object
       const selected = workspaces.data?.data.find(
         (item) => item.slug === router.query.workspace,
       );
-
-      if (!selected) router.push('/404');
-
-      setSelectedWorkspace(selected ?? null);
+      setDefaultWorkspace(selected ?? null);
     } else {
-      setSelectedWorkspace(workspaces.data?.data[0] ?? null);
+      // set the selected workspace to the first object in the workspaces array, or if it is null or undefined, set it to null.
+      setDefaultWorkspace(workspaces.data?.data[0] ?? null);
     }
-  }, [workspaces.isLoading]);
+  }, [workspaces.data]);
 
-  useEffect(() => {
-    if (selectedWorkspace?.slug) {
-      router.push(`/dashboard/${selectedWorkspace?.slug}`);
-    }
-  }, [selectedWorkspace]);
+  // User select workspace
+  const onSelectWorkspace = (item: Workspace) => {
+    setDefaultWorkspace(item);
+    setOpen(false);
+    router.push(`/dashboard/${item?.slug}`);
+  };
+
+  if (workspaces.isLoading) {
+    return <Skeleton className="h-[30px] w-[200px] rounded-md" />;
+  }
 
   return (
     <>
@@ -100,12 +107,12 @@ export default function WorkspaceSelector() {
             >
               <Avatar className="mr-2 h-5 w-5">
                 <AvatarImage
-                  src={`https://avatar.vercel.sh/${selectedWorkspace?.slug}.png`}
-                  alt={selectedWorkspace?.title}
+                  src={`https://avatar.vercel.sh/${defaultWorkspace?.slug}.png`}
+                  alt={defaultWorkspace?.title}
                 />
                 <AvatarFallback>SC</AvatarFallback>
               </Avatar>
-              {selectedWorkspace?.title}
+              {defaultWorkspace?.title}
               <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -118,10 +125,10 @@ export default function WorkspaceSelector() {
                   <CommandGroup key={group.label} heading={group.label}>
                     {group.workspaces.map((item) => (
                       <CommandItem
-                        key={`workspace-${item.slug}`}
+                        key={`workspace-${item.slug}-${item.id}`}
+                        data-value={item.slug}
                         onSelect={() => {
-                          setSelectedWorkspace(item);
-                          setOpen(false);
+                          onSelectWorkspace(item);
                         }}
                         className="text-sm"
                       >
@@ -131,12 +138,13 @@ export default function WorkspaceSelector() {
                             alt={item.title}
                           />
                           <AvatarFallback>SC</AvatarFallback>
+                          {item.slug}
                         </Avatar>
-                        {item.title}
+                        <p>{item.title}</p>
                         <CheckIcon
                           className={cn(
                             'ml-auto h-4 w-4',
-                            selectedWorkspace?.slug === item.slug
+                            defaultWorkspace?.slug === item.slug
                               ? 'opacity-100'
                               : 'opacity-0',
                           )}

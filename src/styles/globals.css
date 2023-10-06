@@ -80,3 +80,19 @@
 ::after {
   border-color: hsl(var(--border)) !important;
 }
+
+#slash-command {
+  background: hsl(240 10% 3.9%) !important;
+}
+
+#slash-command p {
+  color: #ffffff !important;
+}
+
+#slash-command button {
+  background: #000000 !important;
+}
+
+#slash-command button:hover {
+  background: #141414 !important;
+}

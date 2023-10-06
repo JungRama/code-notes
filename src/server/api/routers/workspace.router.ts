@@ -1,20 +1,14 @@
-import { z } from 'zod';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 
 import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from '~/server/api/trpc';
-
-import {
-  create,
-  params,
-  update,
-  filter,
+  createWorkspaceSchema,
+  paramsWorkspaceSchema,
+  updateWorkspaceSchema,
 } from '~/server/api/schema/workspace.schema';
 
 import {
   createWorkspaceHandler,
+  deleteWorkspaceHandler,
   getWorkspacesHandler,
   updateWorkspaceHandler,
 } from '~/server/api/controllers/workspace.controller';
@@ -26,17 +20,30 @@ export const workspaceRouter = createTRPCRouter({
     });
   }),
 
-  create: protectedProcedure.input(create).mutation(({ input, ctx }) => {
-    return createWorkspaceHandler({
-      input,
-      ctx,
-    });
-  }),
+  create: protectedProcedure
+    .input(createWorkspaceSchema)
+    .mutation(({ input, ctx }) => {
+      return createWorkspaceHandler({
+        input,
+        ctx,
+      });
+    }),
 
-  update: protectedProcedure.input(update).mutation(({ input, ctx }) => {
-    return updateWorkspaceHandler({
-      input: input.body,
-      ctx,
-    });
-  }),
+  update: protectedProcedure
+    .input(updateWorkspaceSchema)
+    .mutation(({ input, ctx }) => {
+      return updateWorkspaceHandler({
+        input,
+        ctx,
+      });
+    }),
+
+  delete: protectedProcedure
+    .input(paramsWorkspaceSchema)
+    .mutation(({ input, ctx }) => {
+      return deleteWorkspaceHandler({
+        paramsInput: input,
+        ctx,
+      });
+    }),
 });

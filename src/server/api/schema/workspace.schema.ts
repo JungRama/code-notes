@@ -1,28 +1,28 @@
 import { z } from 'zod';
 
-export const create = z.object({
-  title: z.string(),
+export const createWorkspaceSchema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
 });
 
-export const params = z.object({
+export const paramsWorkspaceSchema = z.object({
   id: z.string(),
 });
 
-export const update = z.object({
-  params,
+export const updateWorkspaceSchema = z.object({
+  params: paramsWorkspaceSchema,
   body: z
     .object({
-      title: z.string(),
+      title: z.string().min(1, { message: 'Title is required' }),
     })
     .partial(),
 });
 
-export const filter = z.object({
+export const filterWorkspaceSchema = z.object({
   limit: z.number().default(1),
   page: z.number().default(10),
 });
 
-export type createSchema = z.TypeOf<typeof create>;
-export type paramsSchema = z.TypeOf<typeof params>;
-export type updateSchema = z.TypeOf<typeof update>['body'];
-export type filterSchema = z.TypeOf<typeof filter>;
+export type CreateWorkspaceSchema = z.TypeOf<typeof createWorkspaceSchema>;
+export type ParamsWorkspaceSchema = z.TypeOf<typeof paramsWorkspaceSchema>;
+export type UpdateWorkspaceSchema = z.TypeOf<typeof updateWorkspaceSchema>;
+export type FilterWorkspaceSchema = z.TypeOf<typeof filterWorkspaceSchema>;

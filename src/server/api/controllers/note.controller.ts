@@ -1,4 +1,3 @@
-import type { Workspace } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TRPCError } from '@trpc/server';
 import type {
@@ -13,17 +12,26 @@ import {
   updateWorkspace,
 } from '~/server/api/services/workspace.service';
 import { type Context } from '~/server/api/trpc';
+import { createNote, findAllNotesByWorkspace } from '../services/note.service';
+import { CreateNoteSchema } from '../schema/note.schema';
 
-export const getWorkspacesHandler = async ({ ctx }: { ctx: Context }) => {
+export const getNotesByWorkspaceHandler = async ({
+  ctx,
+  workspaceId,
+}: {
+  ctx: Context;
+  workspaceId: string;
+}) => {
   try {
-    const workspace = await findAllWorkspaces({
+    const note = await findAllNotesByWorkspace({
       where: {
+        workspaceId,
         userId: ctx.session?.user.id,
       },
     });
 
     return {
-      data: workspace,
+      data: note,
     };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
@@ -37,20 +45,23 @@ export const getWorkspacesHandler = async ({ ctx }: { ctx: Context }) => {
   }
 };
 
-export const createWorkspaceHandler = async ({
+export const createNoteHandler = async ({
   input,
   ctx,
 }: {
-  input: CreateWorkspaceSchema;
+  input: CreateNoteSchema;
   ctx: Context;
 }) => {
   try {
-    const slug = input.title;
-
-    const workspace = await createWorkspace({
+    const note = await createNote({
       input: {
         title: input.title,
-        slug: slug,
+        workspace: {
+          connect: {
+            id: input.workspaceId,
+          },
+        },
+        content: '',
         user: {
           connect: {
             id: ctx.session?.user.id,
@@ -60,7 +71,7 @@ export const createWorkspaceHandler = async ({
     });
 
     return {
-      data: workspace,
+      data: note,
     };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {

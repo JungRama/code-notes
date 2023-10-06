@@ -26,7 +26,7 @@ model Workspace {
     @@unique([userId, slug])
 
     // An index is a data structure that improves the speed of data retrieval operations on a database table.
-    @@index([userId])
+    @@index([userId, slug])
 }
 
 model Note {

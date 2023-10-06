@@ -1,5 +1,6 @@
 import { type Prisma } from '@prisma/client';
 import { db } from '~/server/db';
+import generateUniqueSlug from '~/utils/slug';
 
 /**
  * Retrieves all workspaces based on the specified filters.
@@ -37,8 +38,22 @@ export const createWorkspace = async ({
 }: {
   input: Prisma.WorkspaceCreateInput;
 }) => {
+  const slug = await generateUniqueSlug(async (uniqueSlug) => {
+    return (await db.workspace.findFirst({
+      where: {
+        slug: uniqueSlug,
+        userId: input.user?.connect?.id,
+      },
+    }))
+      ? true
+      : false;
+  }, input.title);
+
   return await db.workspace.create({
-    data: input,
+    data: {
+      ...input,
+      slug,
+    },
   });
 };
 
@@ -57,9 +72,26 @@ export const updateWorkspace = async ({
   where: Prisma.WorkspaceWhereUniqueInput;
   input: Prisma.WorkspaceUpdateInput;
 }) => {
+  const slug = await generateUniqueSlug(async (uniqueSlug) => {
+    return (await db.workspace.findFirst({
+      where: {
+        slug: uniqueSlug,
+        userId: input.user?.connect?.id,
+        NOT: {
+          id: where.id,
+        },
+      },
+    }))
+      ? true
+      : false;
+  }, input.title as string);
+
   return await db.workspace.update({
     where,
-    data: input,
+    data: {
+      ...input,
+      slug,
+    },
   });
 };
 

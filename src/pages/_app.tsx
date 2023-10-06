@@ -10,26 +10,26 @@ import '~/styles/globals.css';
 // Providers
 import { ThemeProvider } from '~/context/theme-provider';
 
-import { getServerAuthSession } from '~/server/auth';
-
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
+  useQueryClient,
 } from '@tanstack/react-query';
 import { useState } from 'react';
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { db } from '~/server/db';
-import { appRouter } from '~/server/api/root';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from '~/components/ui/toaster';
 
 const MyApp: AppType<{ session: Session | null; dehydratedState: unknown }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const [queryClient] = useState(() => new QueryClient());
+  const queryClient = useQueryClient();
 
   return (
     <div className={inter.className}>
+      <Toaster />
+
       <SessionProvider session={session}>
         <ThemeProvider
           attribute="class"
@@ -38,6 +38,7 @@ const MyApp: AppType<{ session: Session | null; dehydratedState: unknown }> = ({
           disableTransitionOnChange
         >
           <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
             <Hydrate state={pageProps?.dehydratedState}>
               <Component {...pageProps} />
             </Hydrate>
