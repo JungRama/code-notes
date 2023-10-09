@@ -10,7 +10,7 @@ import Spinner from '~/components/ui/spinner';
 import { useToast } from '~/components/ui/use-toast';
 import useStoreWorkspaces from '~/store/workspaces';
 import { api } from '~/utils/api';
-import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
+import EmojiPicker, { type EmojiClickData, Theme } from 'emoji-picker-react';
 import {
   DropdownMenu,
   DropdownMenuContent,

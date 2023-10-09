@@ -2,8 +2,8 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TRPCError } from '@trpc/server';
 import { type Context } from '~/server/api/trpc';
 import {
-  ParamsNoteSchema,
-  UpdateNoteSchema,
+  type ParamsNoteSchema,
+  type UpdateNoteSchema,
   type CreateNoteSchema,
 } from '../schema/note.schema';
 import {
