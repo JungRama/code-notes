@@ -1,6 +1,6 @@
 # Code Notes
 
-![Code Notes Logo](https://link.to/your/logo/image.png)
+![Code Notes Logo](https://raw.githubusercontent.com/JungRama/code-notes/master/public/og-image.png)
 
 Welcome to **Code Notes**, your minimalist note-taking solution that takes your notes without any unnecessary distractions. This repository houses the source code for Code Notes, a straightforward and user-friendly note-taking application.
 
@@ -15,6 +15,14 @@ Code Notes is designed with simplicity and ease of use in mind. It provides a cl
 - **Markdown Support**: Write your notes in Markdown for easy formatting and structuring.
 
 - **Workspace**: Organize your notes with workspace to quickly locate and filter your content.
+
+## Stack
+
+- **NextJS**: Next.js is a popular open-source JavaScript framework built on top of React. It is designed to simplify the process of building modern, server-rendered React applications.
+
+- **TRPC**: it is a library for building type-safe APIs in TypeScript. tRPC aims to eliminate runtime errors in your API calls by generating TypeScript types for your API endpoints.
+
+- **Prisma**: Prisma is an open-source database toolkit and ORM (Object-Relational Mapping) for TypeScript and JavaScript. It simplifies database access and management by providing a type-safe and auto-generated query builder.
 
 ## Getting Started
 
