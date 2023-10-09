@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const createWorkspaceSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
+  emoticon: z.string().optional(),
 });
 
 export const paramsWorkspaceSchema = z.object({
@@ -13,6 +14,7 @@ export const updateWorkspaceSchema = z.object({
   body: z
     .object({
       title: z.string().min(1, { message: 'Title is required' }),
+      emoticon: z.string().optional(),
     })
     .partial(),
 });

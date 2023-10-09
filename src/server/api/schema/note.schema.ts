@@ -14,7 +14,10 @@ export const updateNoteSchema = z.object({
   body: z
     .object({
       title: z.string().min(1, { message: 'Title is required' }),
-      content: z.string(),
+      description: z.string(),
+      coverImage: z.string(),
+      contentJson: z.string(),
+      contentHTML: z.string(),
     })
     .partial(),
 });

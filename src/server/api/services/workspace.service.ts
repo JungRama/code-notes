@@ -72,19 +72,22 @@ export const updateWorkspace = async ({
   where: Prisma.WorkspaceWhereUniqueInput;
   input: Prisma.WorkspaceUpdateInput;
 }) => {
-  const slug = await generateUniqueSlug(async (uniqueSlug) => {
-    return (await db.workspace.findFirst({
-      where: {
-        slug: uniqueSlug,
-        userId: input.user?.connect?.id,
-        NOT: {
-          id: where.id,
+  let slug = undefined;
+  if (input.title) {
+    slug = await generateUniqueSlug(async (uniqueSlug) => {
+      return (await db.workspace.findFirst({
+        where: {
+          slug: uniqueSlug,
+          userId: input.user?.connect?.id,
+          NOT: {
+            id: where.id,
+          },
         },
-      },
-    }))
-      ? true
-      : false;
-  }, input.title as string);
+      }))
+        ? true
+        : false;
+    }, input.title as string);
+  }
 
   return await db.workspace.update({
     where,

@@ -103,16 +103,12 @@ export default function WorkspaceSelector() {
               role="combobox"
               aria-expanded={open}
               aria-label="Select a Workspace"
-              className={cn('w-[200px] justify-between')}
+              className={cn('w-[250px] justify-between')}
             >
-              <Avatar className="mr-2 h-5 w-5">
-                <AvatarImage
-                  src={`https://avatar.vercel.sh/${defaultWorkspace?.slug}.png`}
-                  alt={defaultWorkspace?.title}
-                />
-                <AvatarFallback>SC</AvatarFallback>
-              </Avatar>
-              {defaultWorkspace?.title}
+              <div className="flex gap-1">
+                <p>{defaultWorkspace?.emoticon}</p>
+                <p>{defaultWorkspace?.title}</p>
+              </div>
               <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -130,16 +126,10 @@ export default function WorkspaceSelector() {
                         onSelect={() => {
                           onSelectWorkspace(item);
                         }}
-                        className="text-sm"
+                        className="text-s1 flex gap-1"
                       >
-                        <Avatar className="mr-2 h-5 w-5">
-                          <AvatarImage
-                            src={`https://avatar.vercel.sh/${item.slug}.png`}
-                            alt={item.title}
-                          />
-                          <AvatarFallback>SC</AvatarFallback>
-                          {item.slug}
-                        </Avatar>
+                        {item.emoticon}
+                        <p className="hidden">{item.slug}</p>
                         <p>{item.title}</p>
                         <CheckIcon
                           className={cn(

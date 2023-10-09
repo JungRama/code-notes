@@ -14,6 +14,7 @@ datasource db {
 model Workspace {
     id              String @id @default(uuid())
     userId          String
+    emoticon        String?
     title           String
     slug            String
     createdAt       DateTime @default(now())
@@ -34,7 +35,10 @@ model Note {
     userId          String
     workspaceId     String
     title           String
-    content         String
+    description     String?
+    coverImage      String?
+    contentJson     String? @db.Text
+    contentHTML     String? @db.Text
     createdAt       DateTime @default(now())
     updatedAt       DateTime @default(now())
 

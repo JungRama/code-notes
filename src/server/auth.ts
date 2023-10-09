@@ -10,6 +10,8 @@ import GitHubProvider from 'next-auth/providers/github';
 
 import { env } from '~/env.mjs';
 import { db } from '~/server/db';
+import { api } from '~/utils/api';
+import { createWorkspace } from './api/services/workspace.service';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -47,12 +49,27 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  events: {
+    createUser: async ({ user }) => {
+      await createWorkspace({
+        input: {
+          title: 'Default Workspace',
+          emoticon: '🗒️',
+          slug: 'default-workspace',
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+      });
+    },
+  },
+  pages: {
+    signIn: '/sign-in',
+  },
   adapter: PrismaAdapter(db),
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,

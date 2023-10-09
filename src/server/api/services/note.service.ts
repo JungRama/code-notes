@@ -9,7 +9,7 @@ import { db } from '~/server/db';
  * @param {Prisma.NoteSelect} options.select - The fields to select for each note.
  * @return {Promise<Array<Object>>} - A promise that resolves to an array of notes.
  */
-export const findAllNotesByWorkspace = async ({
+export const findAllNotes = async ({
   where,
   select,
 }: {
@@ -22,6 +22,19 @@ export const findAllNotesByWorkspace = async ({
     orderBy: {
       createdAt: 'desc',
     },
+  });
+};
+
+export const findOneNote = async ({
+  where,
+  select,
+}: {
+  where?: Partial<Prisma.NoteWhereInput>;
+  select?: Prisma.NoteSelect;
+}) => {
+  return await db.note.findFirstOrThrow({
+    where,
+    select,
   });
 };
 

@@ -1,4 +1,3 @@
-import type { Workspace } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TRPCError } from '@trpc/server';
 import type {
@@ -50,6 +49,7 @@ export const createWorkspaceHandler = async ({
     const workspace = await createWorkspace({
       input: {
         title: input.title,
+        emoticon: '🗒️',
         slug: slug,
         user: {
           connect: {
@@ -92,6 +92,7 @@ export const updateWorkspaceHandler = async ({
       input: {
         title: input.body.title,
         slug: slug,
+        emoticon: input.body.emoticon,
         user: {
           connect: {
             id: ctx.session?.user.id,

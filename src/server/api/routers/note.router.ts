@@ -4,9 +4,17 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 
 import {
   createNoteHandler,
+  deleteNoteHandler,
+  getNoteByIdHandler,
   getNotesByWorkspaceHandler,
+  updateNoteHandler,
 } from '../controllers/note.controller';
-import { createNoteSchema } from '../schema/note.schema';
+import {
+  createNoteSchema,
+  paramsNoteSchema,
+  updateNoteSchema,
+} from '../schema/note.schema';
+import { updateNote } from '../services/note.service';
 
 export const noteRouter = createTRPCRouter({
   getAll: protectedProcedure
@@ -22,6 +30,19 @@ export const noteRouter = createTRPCRouter({
       });
     }),
 
+  getById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(({ input, ctx }) => {
+      return getNoteByIdHandler({
+        ctx,
+        id: input.id,
+      });
+    }),
+
   create: protectedProcedure
     .input(createNoteSchema)
     .mutation(({ input, ctx }) => {
@@ -31,21 +52,21 @@ export const noteRouter = createTRPCRouter({
       });
     }),
 
-  // update: protectedProcedure
-  //   .input(updateWorkspaceSchema)
-  //   .mutation(({ input, ctx }) => {
-  //     return updateWorkspaceHandler({
-  //       input,
-  //       ctx,
-  //     });
-  //   }),
+  update: protectedProcedure
+    .input(updateNoteSchema)
+    .mutation(({ input, ctx }) => {
+      return updateNoteHandler({
+        input,
+        ctx,
+      });
+    }),
 
-  // delete: protectedProcedure
-  //   .input(paramsWorkspaceSchema)
-  //   .mutation(({ input, ctx }) => {
-  //     return deleteWorkspaceHandler({
-  //       paramsInput: input,
-  //       ctx,
-  //     });
-  //   }),
+  delete: protectedProcedure
+    .input(paramsNoteSchema)
+    .mutation(({ input, ctx }) => {
+      return deleteNoteHandler({
+        paramsInput: input,
+        ctx,
+      });
+    }),
 });

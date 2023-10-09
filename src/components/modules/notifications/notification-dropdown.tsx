@@ -1,15 +1,10 @@
 import { Bell } from 'lucide-react';
 import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 
@@ -29,13 +24,18 @@ export default function NotificationDropdown() {
           <Link href={'/'} className="block p-2">
             <div className="flex flex-col space-y-1">
               <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-red-500"></div>
                 <p className="text-sm font-medium leading-none">
-                  Invited on &quot;Vercela Workspace&quot;
+                  Welcome to code notes!
                 </p>
               </div>
-              <p className="text-xs leading-none text-muted-foreground">
-                20 minutes ago
+              <p className="font-regular text-muted-foreground">
+                Write down your notes easily and access it freely. Thank! by{' '}
+                <a href="https://jungrama.com/" target="_blank">
+                  @JR
+                </a>
+              </p>
+              <p className="font-regular text-xs leading-none text-muted-foreground">
+                10/9/2023
               </p>
             </div>
           </Link>

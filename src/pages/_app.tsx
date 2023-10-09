@@ -19,6 +19,7 @@ import {
 import { useState } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from '~/components/ui/toaster';
+import Head from 'next/head';
 
 const MyApp: AppType<{ session: Session | null; dehydratedState: unknown }> = ({
   Component,
@@ -28,6 +29,20 @@ const MyApp: AppType<{ session: Session | null; dehydratedState: unknown }> = ({
 
   return (
     <div className={inter.className}>
+      <Head>
+        <title>Dev Notes - Takes your notes without any b*llshit</title>
+        <meta
+          name="description"
+          content="Simple notes for your dev journaling"
+        />
+        <meta
+          property="og:title"
+          content="Dev Notes - Takes your notes without any b*llshit"
+        />
+        <meta property="og:image" content="/og-image.png" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+
       <Toaster />
 
       <SessionProvider session={session}>
@@ -38,7 +53,7 @@ const MyApp: AppType<{ session: Session | null; dehydratedState: unknown }> = ({
           disableTransitionOnChange
         >
           <QueryClientProvider client={queryClient}>
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             <Hydrate state={pageProps?.dehydratedState}>
               <Component {...pageProps} />
             </Hydrate>

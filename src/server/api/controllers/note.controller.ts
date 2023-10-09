@@ -1,19 +1,18 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TRPCError } from '@trpc/server';
-import type {
-  CreateWorkspaceSchema,
-  ParamsWorkspaceSchema,
-  UpdateWorkspaceSchema,
-} from '~/server/api/schema/workspace.schema';
-import {
-  createWorkspace,
-  deleteWorkspace,
-  findAllWorkspaces,
-  updateWorkspace,
-} from '~/server/api/services/workspace.service';
 import { type Context } from '~/server/api/trpc';
-import { createNote, findAllNotesByWorkspace } from '../services/note.service';
-import { CreateNoteSchema } from '../schema/note.schema';
+import {
+  ParamsNoteSchema,
+  UpdateNoteSchema,
+  type CreateNoteSchema,
+} from '../schema/note.schema';
+import {
+  createNote,
+  deleteNote,
+  findAllNotes,
+  findOneNote,
+  updateNote,
+} from '../services/note.service';
 
 export const getNotesByWorkspaceHandler = async ({
   ctx,
@@ -23,9 +22,39 @@ export const getNotesByWorkspaceHandler = async ({
   workspaceId: string;
 }) => {
   try {
-    const note = await findAllNotesByWorkspace({
+    const note = await findAllNotes({
       where: {
         workspaceId,
+        userId: ctx.session?.user.id,
+      },
+    });
+
+    return {
+      data: note,
+    };
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: error.message,
+      });
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getNoteByIdHandler = async ({
+  ctx,
+  id,
+}: {
+  ctx: Context;
+  id: string;
+}) => {
+  try {
+    const note = await findOneNote({
+      where: {
+        id,
         userId: ctx.session?.user.id,
       },
     });
@@ -61,7 +90,8 @@ export const createNoteHandler = async ({
             id: input.workspaceId,
           },
         },
-        content: '',
+        contentJson: '',
+        contentHTML: '',
         user: {
           connect: {
             id: ctx.session?.user.id,
@@ -85,24 +115,23 @@ export const createNoteHandler = async ({
   }
 };
 
-export const updateWorkspaceHandler = async ({
+export const updateNoteHandler = async ({
   input,
   ctx,
 }: {
-  input: UpdateWorkspaceSchema;
+  input: UpdateNoteSchema;
   ctx: Context;
 }) => {
   try {
-    const slug = input.body.title;
-
-    const workspace = await updateWorkspace({
+    const note = await updateNote({
       where: {
         id: input.params.id,
         userId: ctx.session?.user.id,
       },
       input: {
         title: input.body.title,
-        slug: slug,
+        contentJson: input.body.contentJson,
+        contentHTML: input.body.contentHTML,
         user: {
           connect: {
             id: ctx.session?.user.id,
@@ -112,7 +141,7 @@ export const updateWorkspaceHandler = async ({
     });
 
     return {
-      data: workspace,
+      data: note,
     };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
@@ -126,15 +155,15 @@ export const updateWorkspaceHandler = async ({
   }
 };
 
-export const deleteWorkspaceHandler = async ({
+export const deleteNoteHandler = async ({
   paramsInput,
   ctx,
 }: {
-  paramsInput: ParamsWorkspaceSchema;
+  paramsInput: ParamsNoteSchema;
   ctx: Context;
 }) => {
   try {
-    const workspace = await deleteWorkspace({
+    const note = await deleteNote({
       where: {
         id: paramsInput.id,
         userId: ctx.session?.user.id,
@@ -142,7 +171,7 @@ export const deleteWorkspaceHandler = async ({
     });
 
     return {
-      data: workspace,
+      data: note,
     };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {

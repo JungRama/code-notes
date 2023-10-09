@@ -1,28 +1,41 @@
-# Create T3 App
+# Code Notes
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+![Code Notes Logo](https://link.to/your/logo/image.png)
 
-## What's next? How do I make an app with this?
+Welcome to **Code Notes**, your minimalist note-taking solution that takes your notes without any unnecessary distractions. This repository houses the source code for Code Notes, a straightforward and user-friendly note-taking application.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Overview
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Code Notes is designed with simplicity and ease of use in mind. It provides a clean and distraction-free interface to help you capture and organize your thoughts, ideas, and important information effortlessly.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Features
 
-## Learn More
+- **Minimalist Design**: Code Notes offers a clutter-free environment to focus solely on your notes.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- **Markdown Support**: Write your notes in Markdown for easy formatting and structuring.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- **Workspace**: Organize your notes with workspace to quickly locate and filter your content.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Getting Started
 
-## How do I deploy this?
+To get started with Code Notes, follow these steps:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+1. Clone this repository to your local machine.
+2. Install the required dependencies.
+3. Start the application.
+4. Open your browser and navigate to `http://localhost:3000` to access Code Notes.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Thanks to all our contributors who have helped make Code Notes better.
+- Code Notes was inspired by a desire for a minimalist note-taking solution.
+
+---
+
+Enjoy using Code Notes for all your note-taking needs. If you have any questions, suggestions, or issues, please feel free to [open an issue]. Happy note-taking!
+
+[Visit Code Notes on GitHub](https://github.com/JungRama/code-notes)

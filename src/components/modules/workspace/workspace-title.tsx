@@ -10,6 +10,12 @@ import Spinner from '~/components/ui/spinner';
 import { useToast } from '~/components/ui/use-toast';
 import useStoreWorkspaces from '~/store/workspaces';
 import { api } from '~/utils/api';
+import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
 
 export default function WorkspaceTitle() {
   const router = useRouter();
@@ -81,6 +87,19 @@ export default function WorkspaceTitle() {
     });
   };
 
+  const updateEmoticonData = (emoticon: EmojiClickData) => {
+    if (!defaultWorkspace?.id) return;
+
+    workspaceUpdate.mutate({
+      params: {
+        id: defaultWorkspace?.id,
+      },
+      body: {
+        emoticon: emoticon.emoji,
+      },
+    });
+  };
+
   const deleteWorkspaceData = () => {
     if (!defaultWorkspace?.id) return;
 
@@ -105,13 +124,36 @@ export default function WorkspaceTitle() {
   }, [defaultWorkspace]);
 
   return (
-    <div className="group mb-10 flex gap-5">
-      <ContentEditable
-        html={workspaceName ?? 'default'} // innerHTML of the editable div
-        onChange={(e) => handleChange(e)} // handle innerHTML change
-        tagName="h1"
-        className="inline-block cursor-text border-b-2 border-transparent bg-transparent text-3xl font-medium focus:border-b-2 focus:border-white focus:outline-none" // Use a custom HTML tag (uses a div by default)
-      />
+    <div className="group mb-10 flex items-center gap-5">
+      <div className="flex items-center gap-1">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="relative flex items-center gap-2 rounded-full px-2 py-2 text-3xl"
+            >
+              {defaultWorkspace?.emoticon}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="overflow-hidden rounded-lg border-0 p-0"
+            align="start"
+            forceMount
+          >
+            <EmojiPicker
+              theme={Theme.DARK}
+              onEmojiClick={(emoji) => updateEmoticonData(emoji)}
+            />
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <ContentEditable
+          html={workspaceName ?? 'default'}
+          onChange={(e) => handleChange(e)}
+          tagName="h1"
+          className="inline-block cursor-text border-b-2 border-transparent bg-transparent text-3xl font-medium focus:border-b-2 focus:border-white focus:outline-none" // Use a custom HTML tag (uses a div by default)
+        />
+      </div>
 
       {workspaceName != defaultWorkspace?.title && (
         <Button
