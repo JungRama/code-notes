@@ -14,7 +14,6 @@ import {
   paramsNoteSchema,
   updateNoteSchema,
 } from '../schema/note.schema';
-import { updateNote } from '../services/note.service';
 
 export const noteRouter = createTRPCRouter({
   getAll: protectedProcedure

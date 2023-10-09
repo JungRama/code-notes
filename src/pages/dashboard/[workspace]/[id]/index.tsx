@@ -1,20 +1,15 @@
 import AuthenticatedLayout from '~/components/layouts/authenticated';
-import CardNote from '~/components/modules/note/card-note';
-import CardNoteCreate from '~/components/modules/note/card-note-create';
 
 import { useTheme } from 'next-themes';
 
-import { cn } from '~/lib/utils';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import NotePlayground from '~/components/modules/note/note-playground';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import useStoreWorkspaces from '~/store/workspaces';
-import { useRouter } from 'next/router';
 import NoteTitle from '~/components/modules/note/note-title';
-import { api } from '~/utils/api';
 import Spinner from '~/components/ui/spinner';
 import { useToast } from '~/components/ui/use-toast';
+import { cn } from '~/lib/utils';
+import { api } from '~/utils/api';
 
 export default function Dashboard() {
   const { theme } = useTheme();
@@ -23,8 +18,6 @@ export default function Dashboard() {
 
   const [editorTheme, setEditorTheme] = useState('dark-theme');
   const { toast } = useToast();
-
-  const { defaultWorkspace } = useStoreWorkspaces();
 
   useEffect(() => {
     setEditorTheme(theme === 'dark' ? 'dark-theme' : 'light-theme');

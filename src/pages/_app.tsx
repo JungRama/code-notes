@@ -4,22 +4,19 @@ import { type AppType } from 'next/app';
 import { api } from '~/utils/api';
 
 import { Inter } from 'next/font/google';
-const inter = Inter({ subsets: ['latin'] });
 import '~/styles/globals.css';
+const inter = Inter({ subsets: ['latin'] });
 
 // Providers
 import { ThemeProvider } from '~/context/theme-provider';
 
 import {
   Hydrate,
-  QueryClient,
   QueryClientProvider,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useState } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toaster } from '~/components/ui/toaster';
 import Head from 'next/head';
+import { Toaster } from '~/components/ui/toaster';
 
 const MyApp: AppType<{ session: Session | null; dehydratedState: unknown }> = ({
   Component,

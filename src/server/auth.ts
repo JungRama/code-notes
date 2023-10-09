@@ -5,12 +5,10 @@ import {
   type DefaultSession,
   type NextAuthOptions,
 } from 'next-auth';
-import DiscordProvider from 'next-auth/providers/discord';
 import GitHubProvider from 'next-auth/providers/github';
 
 import { env } from '~/env.mjs';
 import { db } from '~/server/db';
-import { api } from '~/utils/api';
 import { createWorkspace } from './api/services/workspace.service';
 
 /**

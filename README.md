@@ -1,12 +1,16 @@
 # Code Notes
 
-![Code Notes Logo](https://raw.githubusercontent.com/JungRama/code-notes/master/public/og-image.png)
+![Code Notes Cover](https://raw.githubusercontent.com/JungRama/code-notes/master/public/og-image.png)
 
 Welcome to **Code Notes**, your minimalist note-taking solution that takes your notes without any unnecessary distractions. This repository houses the source code for Code Notes, a straightforward and user-friendly note-taking application.
 
 ## Overview
 
 Code Notes is designed with simplicity and ease of use in mind. It provides a clean and distraction-free interface to help you capture and organize your thoughts, ideas, and important information effortlessly.
+
+## Screenshoot
+
+![Code Notes Screenshoot](https://raw.githubusercontent.com/JungRama/code-notes/master/public/screenshoot.png)
 
 ## Features
 

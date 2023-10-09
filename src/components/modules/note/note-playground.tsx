@@ -2,7 +2,6 @@ import { Editor } from 'novel';
 import { useToast } from '~/components/ui/use-toast';
 import { api } from '~/utils/api';
 import type { Editor as Editor$1 } from '@tiptap/core';
-import Spinner from '~/components/ui/spinner';
 
 export default function NotePlayground({
   id,

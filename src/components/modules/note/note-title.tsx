@@ -22,7 +22,6 @@ export default function NoteTitle({
   const router = useRouter();
   const { toast } = useToast();
   const { defaultWorkspace } = useStoreWorkspaces();
-  const utils = api.useContext();
 
   const noteUpdate = api.note.update.useMutation({
     onError(error) {

@@ -1,14 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import NotificationDropdown from '~/components/modules/notifications/notification-dropdown';
 import UserDropdown from '~/components/modules/users/user-dropdown';
 import WorkspaceSelector from '~/components/modules/workspace/workspace-selector';
 import useStoreWorkspaces from '~/store/workspaces';
 
 export default function Header() {
-  const router = useRouter();
-
   const { defaultWorkspace } = useStoreWorkspaces();
 
   return (
